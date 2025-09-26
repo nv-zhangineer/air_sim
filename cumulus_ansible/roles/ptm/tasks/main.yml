@@ -1,0 +1,30 @@
+---
+- name: Start and enable ptmd service
+  service:
+    name: ptmd
+    state: started
+    enabled: true
+
+- name: Configure ptmd from local topology.dot
+  copy:
+    src: "{{ ptm.topology | default('topology.dot') }}"
+    dest: /etc/ptm.d/topology.dot
+    mode: 0644
+  notify:
+    - restart ptmd
+
+- name: Force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+
+- name: restart ptmd
+  service:
+    name: ptmd
+    state: restarted
+  tags: restart_ptmd
+
+- name: Validate PTM configuration
+  include_tasks:
+    file: validate_ptm.yml
+    apply:
+      tags: validate_ptm  # Add a specific tag for validation
+  tags: validate_ptm

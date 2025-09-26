@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+### This is a template file used to generate env_setup.sh file
+
+LEAF_LIST=({% for leaf in leafs %} "{{ leaf['DeviceName'] }}" {% endfor %})
+
+SPINE_LIST=({% for spine in spines %} "{{ spine['DeviceName'] }}" {% endfor %})
+
+USERNAME="cumulus"
+# Login credentials
+CURRENT_PASSWORD="cumulus"  # Replace with the current default password
+NEW_PASSWORD="air123!"  # Replace with the desired new password
+
+# create password for vault to use
+mkdir -p ~/.ansible/
+echo "$NEW_PASSWORD" > ~/.ansible/vault_password.txt
+
+change_password() {
+    HOST=$1
+    echo "Processing $HOST..."
+
+    expect << EOF
+set timeout 30
+spawn ssh cumulus@$HOST
+
+# Handle SSH host key verification
+expect {
+    "yes/no" { send "yes\r"; exp_continue }
+    "password:" { send "$CURRENT_PASSWORD\r" }
+    timeout { puts "Connection to $HOST timed out"; exit 1 }
+}
+
+# Ignore login banner or other messages
+expect {
+    -re ".*Current password:.*" { send "$CURRENT_PASSWORD\r" }
+    timeout { puts "Failed to find password prompt for $HOST"; exit 1 }
+}
+
+# Handle the password change process
+expect "New password:" { send "$NEW_PASSWORD\r" }
+expect "Retype new password:" { send "$NEW_PASSWORD\r" }
+
+puts "Password successfully changed for $HOST"
+
+# Exit after completion
+expect eof
+EOF
+}
+
+# Iterate over leaf hostnames
+for leaf in "${LEAF_LIST[@]}"; do
+    change_password "$leaf"
+done
+
+# Iterate over spine hostnames
+for spine in "${SPINE_LIST[@]}"; do
+    change_password "$spine"
+done
+
+# Function to copy SSH key to a device
+copy_ssh_key() {
+    HOST=$1
+    echo "Copying SSH key to $HOST..."
+
+    # Combine sshpass with ssh-copy-id
+    sshpass -p "air123!" ssh-copy-id -f $USERNAME@$HOST
+
+    if [ $? -eq 0 ]; then
+        echo "SSH key successfully copied to $HOST."
+    else
+        echo "Failed to copy SSH key to $HOST."
+    fi
+}
+
+# Loop through leaf devices
+for leaf in "${LEAF_LIST[@]}" ; do
+    copy_ssh_key "$leaf"
+done
+
+# Loop through spine devices
+for spine in "${SPINE_LIST[@]}"; do
+    copy_ssh_key "$spine"
+done
+
+update_device() {
+    HOST=$1
+    echo "Connecting to $HOST and running commands..."
+
+    ssh $USERNAME@$HOST << EOF
+nv set interface swp1-128 type swp
+nv set system hostname $HOST
+nv config apply -y
+EOF
+
+    if [ $? -eq 0 ]; then
+        echo "Commands executed successfully on $HOST."
+    else
+        echo "Failed to execute commands on $HOST."
+    fi
+}
+
+# parallel process all devices
+process_devices() {
+    DEVICE_LIST=$1
+
+    for device in "${DEVICE_LIST[@]}"; do
+        update_device "$device" &
+    done
+}
+
+# Process leaf and spine devices in parallel
+process_devices "$LEAF_LIST"
+process_devices "$SPINE_LIST"
+
+# Wait for all background jobs to complete
+wait
+
+echo "All configuration operations completed."

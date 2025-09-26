@@ -1,0 +1,17 @@
+.idea/
+.venv/
+configurations_*
+.pytest_cache/
+
+__pycache__/
+
+.idea
+.DS_Store
+
+cumulus_ansible/roles/ptm/files/topology.dot
+cumulus_ansible/inventory/hosts
+nvidia_air/scripts/env_setup.sh
+
+pdg_data.xlsx
+
+.env

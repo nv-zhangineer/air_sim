@@ -1,0 +1,66 @@
+---
+- name: Validate PTMD configuration using ptmctl
+  become: true
+  ansible.builtin.shell: "ptmctl -dl"
+  register: ptmctl_output
+  failed_when: false  # Allow task to succeed even if some cables fail
+  changed_when: false
+
+- name: Initialize empty list to store failed entries
+  set_fact:
+    failures: []
+
+- name: Process ptmctl output and collect failed entries
+  set_fact:
+    failures: "{{ failures + [item] }}"
+  when:
+    - item.startswith('swp')
+    - (item.split()[1] != 'pass')
+  loop: "{{ ptmctl_output.stdout_lines }}"
+
+- name: Report results when all tests pass
+  debug:
+    msg: "All tests run successfully"
+  when: failures | length == 0
+
+- name: Set Report Directory
+  delegate_to: localhost
+  set_fact:
+    reports_dir: "/tmp/ptm_reports"
+
+- name: Ensure reports directory exists on control node
+  delegate_to: localhost
+  run_once: true
+  become: false
+  file:
+    path: "{{ reports_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Save ptmctl output to control node
+  delegate_to: localhost
+  become: false
+  copy:
+    content: |
+      ===== Output from {{ inventory_hostname }} =====
+      {{ ptmctl_output.stdout }}
+    dest: "{{ reports_dir }}/{{ inventory_hostname }}_ptmctl_output.txt"
+  when: ptmctl_output.stdout is defined
+
+- name: Save combined ptmctl outputs to control node
+  delegate_to: localhost
+  become: false
+  run_once: true
+  assemble:
+    src: "{{ reports_dir }}"
+    dest: "{{ reports_dir }}/ptmctl_combined_output.txt"
+    regexp: '.*_ptmctl_output\.txt$'
+
+- name: Remove individual ptmctl output files after combining
+  delegate_to: localhost
+  run_once: true
+  become: false  # Ensure the task runs as your user
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ query('fileglob', reports_dir + '/*_ptmctl_output.txt') }}"

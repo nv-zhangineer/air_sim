@@ -1,0 +1,12 @@
+[leafs]
+{{ leaf_prefix }}[{{ leaf_start }}:{{ leaf_end }}]
+
+[spines]
+{{ spine_prefix }}[{{ spine_start }}:{{ spine_end }}]
+
+[switches:children]
+leafs
+spines
+
+[switches:vars]
+ansible_user=cumulus

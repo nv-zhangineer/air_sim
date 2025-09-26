@@ -1,0 +1,182 @@
+{
+    "leaf_host_p2p":[
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:1.s0",
+            "LeafIntf": "swp1",
+            "Hostname": "hgx001",
+            "HostID": 1,
+            "RailPort": "rail-0",
+            "SU": 1,
+            "RailID": 0
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:1.s1",
+            "LeafIntf": "swp2",
+            "Hostname": "hgx001",
+            "HostID": 1,
+            "RailPort": "rail-4",
+            "SU": 1,
+            "RailID": 4
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:2.s0",
+            "LeafIntf": "swp3",
+            "Hostname": "hgx002",
+            "HostID": 2,
+            "RailPort": "rail-0",
+            "SU": 1,
+            "RailID": 0
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:2.s1",
+            "LeafIntf": "swp4",
+            "Hostname": "hgx002",
+            "HostID": 2,
+            "RailPort": "rail-4",
+            "SU": 1,
+            "RailID": 4
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:3.s0",
+            "LeafIntf": "swp5",
+            "Hostname": "hgx003",
+            "HostID": 3,
+            "RailPort": "rail-0",
+            "SU": 1,
+            "RailID": 0
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:3.s1",
+            "LeafIntf": "swp6",
+            "Hostname": "hgx003",
+            "HostID": 3,
+            "RailPort": "rail-4",
+            "SU": 1,
+            "RailID": 4
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf001",
+            "LeafID": 1,
+            "Port": "swp:4.s0",
+            "LeafIntf": "swp7",
+            "Hostname": "hgx004",
+            "HostID": 4,
+            "RailPort": "rail-0",
+            "SU": 1,
+            "RailID": 0
+        },
+        {
+            "PodID": 0,
+            "LeafName": "leaf011",
+            "LeafID": 11,
+            "Port": "swp:26.s0",
+            "LeafIntf": "swp51",
+            "Hostname": "hgx090",
+            "HostID": 90,
+            "RailPort": "rail-2",
+            "SU": 3,
+            "RailID": 2
+        }
+    ],
+    "leaf_spine_p2p":[
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:33.s0",
+            "LeafIntf": "swp65",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp1"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:33.s1",
+            "LeafIntf": "swp66",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp2"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:34.s0",
+            "LeafIntf": "swp67",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp3"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:34.s1",
+            "LeafIntf": "swp68",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp4"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:35.s0",
+            "LeafIntf": "swp69",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp5"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:35.s1",
+            "LeafIntf": "swp70",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp6"
+        },
+        {
+            "LeafName": "leaf001",
+            "SU": 1,
+            "LeafID": 1,
+            "Port": "swp:36.s0",
+            "LeafIntf": "swp71",
+            "SpineID": 1,
+            "SpineName": "spine001",
+            "SpineIntf": "swp7"
+        },
+        {
+            "LeafName": "leaf006",
+            "SU": 2,
+            "LeafID": 6,
+            "Port": "swp:48.s1",
+            "LeafIntf": "swp96",
+            "SpineID": 4,
+            "SpineName": "spine004",
+            "SpineIntf": "swp48"
+        }
+    ]
+}
