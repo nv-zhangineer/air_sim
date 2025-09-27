@@ -1,0 +1,7 @@
+nv set interface lo type loopback
+nv set interface lo ip address {{ loopback_ip }}/32
+nv set router bgp autonomous-system {{ local_as }}
+nv set router bgp enable on
+nv set router bgp router-id {{ router_id }}
+nv set vrf {{ vrf }} router bgp address-family ipv4-unicast enable on
+nv set vrf {{ vrf }} router bgp address-family ipv4-unicast network {{ loopback_ip }}/32
