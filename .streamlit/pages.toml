@@ -1,20 +1,4 @@
 [[pages]]
-path = "nxos_page.py"
-name = "Cisco Nexus OS"
-icon = "📄"
-
-#[[pages]]
-#path = "aci_page.py"
-#name = "Cisco ACI"
-#icon = ":material/history:"
-
-#[[pages]]
-#path = "ios_page.py"
-#name = "Cisco IOS"
-#icon = "📖"
-#url_path = "a_very_long_page_title"
-
-[[pages]]
 path = "cumulus_page.py"
 name = "NVIDIA Cumulus"
 icon = "📖"
